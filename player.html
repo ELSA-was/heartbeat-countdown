@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#14101A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>文字游戏</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================ 舞台 ============================ -->
+  <div id="stage">
+    <div id="bgLayer"><img id="bgImg" alt=""></div>
+    <div id="ambLayer"></div>
+    <div id="portraitLayer"></div>
+    <div id="stageText"></div>
+  </div>
+
+  <!-- ============================ 顶栏 ============================ -->
+  <div id="topbar">
+    <span id="topTitle"></span>
+    <span id="topLocation"></span>
+    <div id="topBtns">
+      <button class="ibtn" id="btnHistory" title="历史">历</button>
+      <button class="ibtn" id="btnAuto" title="自动">自</button>
+      <button class="ibtn" id="btnSkip" title="跳过未读">跳</button>
+      <button class="ibtn" id="btnMenu" title="菜单">≡</button>
+    </div>
+  </div>
+
+  <!-- ============================ 对话框 ============================ -->
+  <div id="dialogue">
+    <div id="nameBox"><span id="nameText"></span></div>
+    <div id="textWrap">
+      <p id="textMain"></p>
+      <div id="nextHint"></div>
+    </div>
+  </div>
+
+  <div id="choices"></div>
+
+  <!-- ============================ 场景卡 / 章节卡 ============================ -->
+  <div id="sceneCard"></div>
+  <div id="chapterCard"><div class="ch-inner"><span id="chNum"></span><h1 id="chTitle"></h1></div></div>
+
+  <!-- ============================ 覆盖层 ============================ -->
+  <div id="overlay" hidden>
+    <div id="ovPanel"></div>
+  </div>
+
+  <div id="agegate" hidden>
+    <div class="age-inner">
+      <h1 id="ageTitle"></h1>
+      <p id="ageNote"></p>
+      <p class="age-warn">本作包含明确的成人性描写，仅限 18 岁以上阅读。</p>
+      <div class="age-btns">
+        <button id="ageYes" class="primary large">我已年满 18 岁</button>
+        <button id="ageNo" class="large">离开</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script src="core.js"></script>
+<script src="story.js" onerror="window.__STORY_FALLBACK__=true"></script>
+<script src="app.js"></script>
+</body>
+</html>
