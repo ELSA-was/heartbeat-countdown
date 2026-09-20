@@ -57,7 +57,9 @@ html, body {
 .portrait.center { left: 50%; }
 .portrait.right  { left: 78%; }
 .portrait.far-right { left: 92%; }
-.portrait.dim { opacity: .45; }
+.portrait.dim { opacity: .72; filter: brightness(.78) saturate(.88) drop-shadow(0 6px 24px rgba(0,0,0,.5)); }
+/* 多人同屏由 app.js 计算不重叠站位与缩放，位置稳定后再启用位移动画 */
+.portrait.anim-pos { transition: opacity var(--fade) ease, left 260ms ease, height 260ms ease, bottom 260ms ease, filter 260ms ease; }
 
 #stageText {
   position: absolute; left: 0; right: 0; top: 44%; text-align: center;

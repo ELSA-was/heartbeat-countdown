@@ -122,29 +122,146 @@
     });
   }
 
-  function clearPortraits() { $("portraitLayer").innerHTML = ""; }
+  function clearPortraits() { $("portraitLayer").innerHTML = ""; portraits = []; }
+
+  /* -------------------------------------------------- 多人立绘自动布局
+   * 目标：任意人数的同屏立绘都不重叠，且尽量保留作者在 cast.at 里指定的站位意图。
+   * 流程：算宽高比 → 从基准高度出发尝试排布 → 排不下就整体缩小重试 → 双向松弛保证间距与边界。 */
+  var portraits = [];
+  var AT_POS = { "far-left": 0.10, "left": 0.28, "center": 0.50, "right": 0.72, "far-right": 0.90 };
+
+  function portraitBaseHeight(layer) {
+    var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--portrait-height"));
+    return layer.clientHeight * (v || 78) / 100;
+  }
+
+  /* 期望位置：全部未指定站位时按人数均分；否则按 .5 均布，已指定的用固定锚点 */
+  function desiredPositions(list) {
+    var n = list.length;
+    var allFree = list.every(function (it) { return !it.atkey; });
+    list.forEach(function (it, i) {
+      if (allFree) it.desired = (i + 0.5) / n;
+      else if (it.atkey) it.desired = AT_POS[it.atkey];
+      else it.desired = n > 1 ? 0.12 + 0.76 * (i / (n - 1)) : 0.5;
+    });
+  }
+
+  /* 给定高度 h，计算每个立绘的中心横坐标；返回 false 表示该高度下排不下 */
+  function tryPlace(items, W, h) {
+    var margin = Math.max(6, Math.min(W * 0.03, 36));
+    var gap = Math.min(20, Math.max(4, W * 0.012));
+    var totalW = 0;
+    items.forEach(function (it) {
+      it.w = h * it.ar * (it.es || it.scale || 1);
+      it.x = it.desired * W;
+      totalW += it.w;
+    });
+    if (totalW + gap * (items.length - 1) > W - margin * 2) return false;
+    // 从左到右推开，保证相邻不重叠
+    var prev = null;
+    items.forEach(function (it) {
+      var minX = Math.max(margin + it.w / 2, it.x);
+      if (prev) minX = Math.max(minX, prev.x + prev.w / 2 + gap + it.w / 2);
+      it.x = minX;
+      prev = it;
+    });
+    // 右侧回收到边界内，再反向修正
+    var last = items[items.length - 1];
+    var rightLimit = W - margin - last.w / 2;
+    if (last.x > rightLimit) {
+      last.x = rightLimit;
+      for (var i = items.length - 2; i >= 0; i--) {
+        var cur = items[i], nxt = items[i + 1];
+        var maxX = nxt.x - nxt.w / 2 - gap - cur.w / 2;
+        if (cur.x > maxX) cur.x = Math.max(margin + cur.w / 2, maxX);
+      }
+    }
+    // 反向修正后若左侧越界，说明这个高度放不下
+    var first = items[0];
+    if (first.x - first.w / 2 < margin - 0.5) return false;
+    return true;
+  }
+
+  function layoutPortraits() {
+    var layer = $("portraitLayer");
+    var items = portraits.filter(function (it) { return !it.dead && it.wrap.isConnected && it.img && it.img.naturalWidth; });
+    if (!items.length) return;
+    var W = layer.clientWidth, H = layer.clientHeight;
+    if (!W || !H) return;
+    var hasFocus = items.some(function (it) { return it.focused; });
+    items.forEach(function (it) {
+      it.ar = it.img.naturalWidth / it.img.naturalHeight || 0.72;
+      // 有人说话时：说话者保持基准大小，其他人缩到 88% 形成前后层次
+      it.es = it.scale * (hasFocus && !it.focused ? 0.88 : 1);
+    });
+    items.sort(function (a, b) { return a.desired === b.desired ? a.order - b.order : a.desired - b.desired; });
+    var base = portraitBaseHeight(layer), h = base;
+    for (var attempt = 0; attempt < 48; attempt++) {
+      if (tryPlace(items, W, h)) break;
+      h *= 0.94;
+    }
+    items.forEach(function (it) {
+      it.wrap.style.height = (h * it.es) + "px";
+      it.wrap.style.left = it.x + "px";
+      it.wrap.style.zIndex = String(it.focused ? 30 : 20);
+      // 中间的人略微上移，形成弧形站位层次（3 人以上才明显）
+      if (items.length >= 3) {
+        var cent = 1 - Math.abs(it.x / W * 2 - 1);
+        it.wrap.style.bottom = (cent * 3.5) + "%";
+      } else {
+        it.wrap.style.bottom = "";
+      }
+      if (!it.wrap.classList.contains("placed")) {
+        it.wrap.classList.add("placed");
+        requestAnimationFrame(function () { it.wrap.classList.add("anim-pos"); });
+      }
+    });
+  }
+
+  /* 说话者聚焦：有台词时焦点立绘保持大小，其余变暗缩小；旁白/画外音时全部恢复 */
+  function focusPortraits(who) {
+    var onStage = !!who && portraits.some(function (it) { return !it.dead && it.wrap.dataset.who === who; });
+    var changed = false;
+    portraits.forEach(function (it) {
+      if (it.dead) return;
+      var f = onStage && it.wrap.dataset.who === who;
+      if (it.focused !== f) { it.focused = f; changed = true; }
+      it.wrap.classList.toggle("focus", f);
+      it.wrap.classList.toggle("dim", onStage && !f);
+    });
+    if (changed) layoutPortraits();
+  }
 
   function showCast(cast) {
     var layer = $("portraitLayer");
-    layer.innerHTML = "";
-    (cast || []).forEach(function (c) {
+    layer.innerHTML = ""; portraits = [];
+    (cast || []).forEach(function (c, i) {
       var ch = story.characters[c.who]; if (!ch) return;
       var map = ch.portraits || {};
       var aid = map[c.emotion] || map.default;
       var wrap = document.createElement("div");
       wrap.className = "portrait " + (c.at || "center");
       wrap.dataset.who = c.who;
-      if (c.scale) wrap.style.height = "calc(var(--portrait-height) * " + c.scale + " * 1%)";
       layer.appendChild(wrap);
+      var item = { wrap: wrap, img: null, order: i, scale: c.scale || 1, atkey: c.at || "", desired: 0.5, ar: 0.72 };
+      portraits.push(item);
       // 异步探测：图还没生成就静默不显示；生成完刷新或重新进节点即出现
       resolveId(aid, function (url) {
         if (!url || !wrap.isConnected) return;
         var img = document.createElement("img");
         img.alt = ch.name;
-        img.onerror = function () { wrap.remove(); };
-        img.onload = function () { wrap.classList.add("on"); };
+        img.onerror = function () { item.dead = true; wrap.remove(); layoutPortraits(); };
+        img.onload = function () {
+          item.img = img;
+          wrap.classList.add("on");
+          desiredPositions(portraits);
+          layoutPortraits();
+        };
         img.src = url;
         wrap.appendChild(img);
+        if (img.complete && img.naturalWidth) {
+          item.img = img; wrap.classList.add("on"); desiredPositions(portraits); layoutPortraits();
+        }
       });
     });
   }
@@ -156,7 +273,7 @@
     var node = $("portraitLayer").querySelector('[data-who="' + who + '"] img');
     if (!node) return;
     var next = new Image();
-    next.onload = function () { node.src = url; };
+    next.onload = function () { node.src = url; layoutPortraits(); };
     next.src = url;
   }
 
@@ -234,6 +351,7 @@
       document.documentElement.style.setProperty("--accent", base);
     }
     if (seg.emotion && seg.speaker) setPortraitEmotion(seg.speaker, seg.emotion);
+    focusPortraits(isLine ? seg.speaker : "");
     if (seg.sfx) playSfx(seg.sfx);
     $("textMain").classList.toggle("intimate", !!(nodeIntimacy && nodeIntimacy.tier === "adult"));
   }
@@ -684,6 +802,11 @@
     rebuildTrail(0);
     wireInput();
     showTitle();
+    var rzTimer = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(rzTimer); rzTimer = setTimeout(layoutPortraits, 120);
+    });
+    window.addEventListener("orientationchange", function () { setTimeout(layoutPortraits, 300); });
   }
 
   function start() {
