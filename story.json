@@ -70,7 +70,10 @@
         "chen",
         "wen",
         "zhiwei",
-        "solo"
+        "solo",
+        "suli",
+        "fang",
+        "zhou"
       ],
       "label": "路线",
       "visible": false
@@ -250,7 +253,7 @@
         "intimate": "wen_intimate",
         "serious": "wen_serious"
       },
-      "color": "#B85C38"
+      "color": "#4E8A6A"
     },
     "suli": {
       "name": "苏梨",
@@ -331,7 +334,7 @@
         "cry": "fang_cry",
         "soft": "fang_soft"
       },
-      "color": "#C79A2E"
+      "color": "#9A7FC9"
     },
     "zhou": {
       "name": "老周",
@@ -3278,6 +3281,54 @@
             }
           ],
           "feedback": "他愣了一下，然后笑了：「行。我带相机。」"
+        },
+        {
+          "id": "pick_suli",
+          "text": "苏梨",
+          "next": "d3_after_date",
+          "effects": [
+            {
+              "set": "route",
+              "value": "suli"
+            },
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "苏梨挑眉：「眼光不错。」她挽住你的手，香水很亮，手心却有点凉。"
+        },
+        {
+          "id": "pick_fang",
+          "text": "方晚",
+          "next": "d3_after_date",
+          "effects": [
+            {
+              "set": "route",
+              "value": "fang"
+            },
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "方晚手一抖，签几乎掉进碗里：「我、我吗？」耳尖红透了。"
+        },
+        {
+          "id": "pick_zhou",
+          "text": "老周",
+          "next": "d3_after_date",
+          "effects": [
+            {
+              "set": "route",
+              "value": "zhou"
+            },
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "全场安静两秒。老周扶了扶眼镜：「……导播，把这段掐了。」没人敢掐。"
         }
       ],
       "cast": [
@@ -3813,6 +3864,42 @@
             }
           ],
           "feedback": "弹幕说你「清流」。也有人说你「太会了」。两种说法都对。"
+        },
+        {
+          "id": "room_suli",
+          "text": "苏梨",
+          "next": "d4_broadcast",
+          "effects": [
+            {
+              "set": "route",
+              "value": "suli"
+            }
+          ],
+          "feedback": "苏梨把行李箱推进你房间：「放心，我打呼很轻，papi 都这么说。」"
+        },
+        {
+          "id": "room_fang",
+          "text": "方晚",
+          "next": "d4_broadcast",
+          "effects": [
+            {
+              "set": "route",
+              "value": "fang"
+            }
+          ],
+          "feedback": "方晚抱着枕头站在门口，小声问：「我睡相不好，你会不会嫌弃我。」"
+        },
+        {
+          "id": "room_zhou",
+          "text": "老周",
+          "next": "d4_broadcast",
+          "effects": [
+            {
+              "set": "route",
+              "value": "zhou"
+            }
+          ],
+          "feedback": "老周盯着同住名单看了十秒，说：「行吧。反正我睡剪辑房。」他没走。"
         }
       ],
       "cast": [
@@ -4272,6 +4359,30 @@
             "value": "wen"
           },
           "next": "d5_wen"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "suli"
+          },
+          "next": "d5_suli"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "fang"
+          },
+          "next": "d5_fang"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "zhou"
+          },
+          "next": "d5_zhou"
         },
         {
           "next": "d5_none"
@@ -5176,6 +5287,30 @@
             "value": "wen"
           },
           "next": "d9_wen"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "suli"
+          },
+          "next": "d9_suli"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "fang"
+          },
+          "next": "d9_fang"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "zhou"
+          },
+          "next": "d9_zhou"
         },
         {
           "next": "d9_none"
@@ -6186,6 +6321,81 @@
             ]
           },
           "next": "wei_night"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "suli"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 11
+              }
+            ]
+          },
+          "next": "suli_intro"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "suli"
+          },
+          "next": "d11_alone"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "fang"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 11
+              }
+            ]
+          },
+          "next": "fang_intro"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "fang"
+          },
+          "next": "d11_alone"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "zhou"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 11
+              }
+            ]
+          },
+          "next": "zhou_intro"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "zhou"
+          },
+          "next": "d11_alone"
         },
         {
           "next": "d11_alone"
@@ -8385,6 +8595,96 @@
           "next": "end_solo_win"
         },
         {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "suli"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 13
+              },
+              {
+                "var": "intimate",
+                "op": "==",
+                "value": true
+              }
+            ]
+          },
+          "next": "end_suli_true"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "suli"
+          },
+          "next": "end_suli_normal"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "fang"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 13
+              },
+              {
+                "var": "intimate",
+                "op": "==",
+                "value": true
+              }
+            ]
+          },
+          "next": "end_fang_true"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "fang"
+          },
+          "next": "end_fang_normal"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "var": "route",
+                "op": "==",
+                "value": "zhou"
+              },
+              {
+                "var": "love",
+                "op": ">=",
+                "value": 13
+              },
+              {
+                "var": "intimate",
+                "op": "==",
+                "value": true
+              }
+            ]
+          },
+          "next": "end_zhou_true"
+        },
+        {
+          "when": {
+            "var": "route",
+            "op": "==",
+            "value": "zhou"
+          },
+          "next": "end_zhou_normal"
+        },
+        {
           "next": "end_out"
         }
       ],
@@ -9493,6 +9793,1198 @@
         {
           "who": "wen",
           "emotion": "soft"
+        }
+      ]
+    },
+    "d5_suli": {
+      "title": "深夜厨房 · 苏梨",
+      "location": "别墅厨房",
+      "background": "bg_villa_kitchen_night",
+      "bgm": "bgm_night",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "suli",
+          "emotion": "default",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "凌晨一点，厨房灯亮着。苏梨对着手机补妆，拍明天要发的素材。"
+        },
+        {
+          "text": "听见你进来，她手一收，笑容先到位：「睡不着？正好，帮我打个光。」"
+        },
+        {
+          "text": "你看见她卸了一半的妆。左边是苏梨，右边是另一个人，眼睛下面有青黑。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "down",
+          "text": "「别看。现在这个版本，不好看，也不耐用。」"
+        },
+        {
+          "text": "她把手机扣在台面上。没有滤镜的厨房静得能听见冰箱的嗡嗡声。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "serious",
+          "text": "「你猜我几点睡？四点。剪片子。人设不会自己体面，得有人替它熬夜。」"
+        }
+      ],
+      "choices": [
+        {
+          "id": "k5_su_a",
+          "text": "「卸了妆的你更好看。」",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她愣住，随即笑出声，是真的笑：「书店的，你会说话的话，早红了。」"
+        },
+        {
+          "id": "k5_su_b",
+          "text": "帮她把素材剪完",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "凌晨三点，成片两分钟。她盯着你的侧脸看了很久，没说谢谢，说了句「欠你的」。"
+        },
+        {
+          "id": "k5_su_c",
+          "text": "给她倒杯热牛奶",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            },
+            {
+              "add": "pop",
+              "value": 1
+            }
+          ],
+          "feedback": "「喝这个，体面地睡觉。」她接过去，喝得很慢。那晚她三点前就下了线。"
+        }
+      ]
+    },
+    "d5_fang": {
+      "title": "深夜厨房 · 方晚",
+      "location": "别墅厨房",
+      "background": "bg_villa_kitchen_night",
+      "bgm": "bgm_night",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "fang",
+          "emotion": "soft",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "厨房里有黄油和糖的味道。方晚踮着脚烤面包，明早给所有人的份。"
+        },
+        {
+          "text": "她被你吓了一跳，面团差点飞出去：「嘘——别告诉别人，会被剪成腹黑人设。」"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "awkward",
+          "text": "「大家白天都好累。早餐是甜的话，一天就不会太坏。」"
+        },
+        {
+          "text": "你帮她把烤盘端出来。她的手指上全是面粉，袖子挽到手肘。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "down",
+          "text": "「其实我也不知道，一直照顾人，是温柔，还是不敢不温柔。」"
+        },
+        {
+          "text": "烤箱的灯黄黄的。你没答，先咬了一口刚出炉的面包。很甜。她看着你，眼睛弯起来。"
+        }
+      ],
+      "choices": [
+        {
+          "id": "k5_fa_a",
+          "text": "「是温柔。不许怀疑。」",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她「哦」了一声，声音很小。那晚她多烤了一炉，标签上写着：不外售。"
+        },
+        {
+          "id": "k5_fa_b",
+          "text": "「以后我陪你一起烤。」",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她慌忙摆手：「不用不用——」第二天你发现，台面上多了一副新手套。你的码。"
+        },
+        {
+          "id": "k5_fa_c",
+          "text": "把最后一炉留给明天",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            },
+            {
+              "add": "pop",
+              "value": 1
+            }
+          ],
+          "feedback": "你们把面团藏进冰箱，像藏一个两个人的节目。摄像头什么都没拍到。"
+        }
+      ]
+    },
+    "d5_zhou": {
+      "title": "深夜厨房 · 老周",
+      "location": "别墅厨房",
+      "background": "bg_villa_kitchen_night",
+      "bgm": "bgm_night",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "zhou",
+          "emotion": "default",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "你去倒水，发现老周坐在厨房小电视前，一格一格看白天的素材。保温杯冒着热气。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "neutral",
+          "text": "「别声张。我看看哪些要剪掉。」他往旁边挪了挪，给你腾了个位子。"
+        },
+        {
+          "text": "屏幕里的你们笑得很闹。屏幕外的他按暂停，揉眼睛，眼白全是血丝。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "serious",
+          "text": "「做了十五年综艺，我挑的人不会错。」他顿了顿，「错的是这个玩法。」"
+        },
+        {
+          "text": "他指指屏幕：「观众想看真心，我们就造真心。造着造着，真心也怕生了。」"
+        },
+        {
+          "text": "保温杯里的茶早凉透了。他还在看。你忽然明白，这栋房子里最累的不是嘉宾。"
+        }
+      ],
+      "choices": [
+        {
+          "id": "k5_zh_a",
+          "text": "「那就改玩法。」",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "他笑了，皱纹很深：「年轻人，话不能乱讲。」可他把你那杯凉茶换成热的。"
+        },
+        {
+          "id": "k5_zh_b",
+          "text": "陪他把素材看完",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "看到凌晨三点。走时他说：「第三十七号机位拍你最好。别告诉别人。」"
+        },
+        {
+          "id": "k5_zh_c",
+          "text": "「早点睡，导演。」",
+          "next": "d6_broadcast",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "他挥挥手赶你走。第二天你听说，他看到四点。保温杯换了新的，还是没人灌热水。"
+        }
+      ]
+    },
+    "d9_suli": {
+      "title": "一对一约会 · 苏梨",
+      "location": "镇上旧货市场",
+      "background": "bg_town_market",
+      "bgm": "bgm_daily_day",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "suli",
+          "emotion": "smile",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "约会日。苏梨扛着云台直奔旧货市场：「拍《博主的约会 Vlog》，流量密码。」"
+        },
+        {
+          "text": "拍到第三条，她忽然关机，把云台塞进你怀里：「算了。今天不拍了。」"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "neutral",
+          "text": "「陪我逛会儿。不营业的那种。」"
+        },
+        {
+          "text": "她在旧货摊前蹲下来，翻一堆旧胶片相机，跟老板砍价砍了十分钟，砍掉三十块。"
+        },
+        {
+          "text": "阳光下她没戴墨镜，眼角有细纹，笑起来像另一个人。她把砍价赢来的相册递给你看。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "smile",
+          "text": "「这是我入行前想过的日子。摆摊，收旧物，嫁个不会拍我的人。」"
+        }
+      ],
+      "choices": [
+        {
+          "id": "d9s_a2",
+          "text": "把相机买下来送她",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她拒绝三秒，收下：「回头我拍你。你不上镜，但我说了算。」"
+        },
+        {
+          "id": "d9s_b2",
+          "text": "「那你现在想拍什么？」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她举起手机对着海，按了七秒，没发。说这段存着，留给不会表演的日子。"
+        },
+        {
+          "id": "d9s_c2",
+          "text": "「摆摊的话，算我一份。」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            },
+            {
+              "add": "pop",
+              "value": 1
+            }
+          ],
+          "feedback": "她愣了愣，随即大笑：「行啊，合伙人。你负责收钱，我负责砍价。」"
+        }
+      ]
+    },
+    "d9_fang": {
+      "title": "一对一约会 · 方晚",
+      "location": "镇上集市",
+      "background": "bg_town_market",
+      "bgm": "bgm_daily_day",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "fang",
+          "emotion": "smile",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "方晚的约会计划写在便签上，一张一张，像菜谱：买黄油、看灯塔、吃冰。"
+        },
+        {
+          "text": "买黄油时她跟老板娘聊起来了，从奶油的产地聊到镇上的猫，聊了半小时。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "smile",
+          "text": "「这家店的司康，是我在节目里吃过最好吃的。除了我做的。」说完自己脸红了。"
+        },
+        {
+          "text": "灯塔下面风很大。她的草帽差点飞走，你按住的时候，两个人的手叠在一起。"
+        },
+        {
+          "text": "她没抽手。风把她的刘海吹得乱七八糟，她也不管，就那么看着海。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "soft",
+          "text": "「节目播出去，我店里会更忙的。到时候……你要不要来帮我试吃新品？」"
+        }
+      ],
+      "choices": [
+        {
+          "id": "d9f_a",
+          "text": "「试吃员，长期的那种？」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她用力点头，帽子又飞了。这次你们都没去追。"
+        },
+        {
+          "id": "d9f_b",
+          "text": "给她拍一张没整理好的照片",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她凑过来看，脸腾地红了：「删掉删掉！」后来她偷偷问你要了原图。"
+        },
+        {
+          "id": "d9f_c",
+          "text": "「天天吃会胖的。」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "她鼓起腮帮子：「那、那我做低糖的！」认真得像在签合同。"
+        }
+      ]
+    },
+    "d9_zhou": {
+      "title": "一对一约会 · 老周",
+      "location": "海边防波堤",
+      "background": "bg_breakwater",
+      "bgm": "bgm_daily_day",
+      "cast": [
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        },
+        {
+          "who": "zhou",
+          "emotion": "default",
+          "at": "right"
+        }
+      ],
+      "segments": [
+        {
+          "text": "说是约会，其实是老周「抽查工作」。他拎着保温杯，把你从早餐桌拎了出来。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "neutral",
+          "text": "「节目组规定，嘉宾要有独处时间。」他走在前面，「我陪你走一段，监督一下。」"
+        },
+        {
+          "text": "防波堤上风大。他走得慢，倒背着手，像下班散步的中年人，不像导演。"
+        },
+        {
+          "text": "他在堤坝尽头坐下，给你看保温杯里泡的枸杞，讲这栋别墅以前是个渔民的家。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "serious",
+          "text": "「第一季选址我来看过四次。那时候没摄像头，海就是这个声音。」"
+        },
+        {
+          "text": "他盯着海看了很久，忽然说：「停机之后，你要是还愿意跟老头子喝茶，随时来。」"
+        }
+      ],
+      "choices": [
+        {
+          "id": "d9z_a",
+          "text": "「今天就当停机了。」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "他愣住，随即大笑，笑得眼泪都出来了：「好小子，这招我们叫『抢拍』。」"
+        },
+        {
+          "id": "d9z_b",
+          "text": "「把你的故事拍成片子吧。」",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "他摆手说不值一拍。可接下来的路，他讲了十五年的事，一件没落下。"
+        },
+        {
+          "id": "d9z_c",
+          "text": "帮他拧开保温杯",
+          "next": "d10_free",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "杯盖太紧，你拧了三下才开。他接过去，说了声谢谢。十五年里大概没人拧过。"
+        }
+      ]
+    },
+    "suli_intro": {
+      "title": "敲门",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_intimate_slow",
+      "cast": [
+        {
+          "who": "suli",
+          "emotion": "default",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "门铃响了半声就停，像按的人临时反悔。"
+        },
+        {
+          "text": "你开门。苏梨素颜站在门口，手机攥在手里，屏幕还亮着。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "down",
+          "text": "「帮我拍条视频。七秒。」她说，「发了这个，我就跟节目组说，我不装了。」"
+        },
+        {
+          "text": "走廊的摄像机红灯亮着。她往前一步，站进了你房间的阴影里，镜头拍不到的地方。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "serious",
+          "text": "「拍完我就走。所以，认真点。」她的声音在抖，手把手机递得很稳。"
+        }
+      ],
+      "intimacy": {
+        "tier": "adult",
+        "stage": "approach",
+        "partners": [
+          "xu",
+          "suli"
+        ],
+        "consent": "mutual"
+      },
+      "choices": [
+        {
+          "id": "su_in",
+          "text": "接过手机：「来。」",
+          "next": "suli_night",
+          "feedback": "她进门第一件事是把手机反扣在桌上。七秒的事，她想用更久的时间做。"
+        },
+        {
+          "id": "su_stop2",
+          "text": "「今晚不拍。聊天。」",
+          "next": "suli_stop",
+          "feedback": "她如释重负地坐下：「好啊。这是我三个月来第一次不用出镜的约会。」"
+        }
+      ]
+    },
+    "suli_night": {
+      "title": "第七秒",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_intimate_slow",
+      "cast": [
+        {
+          "who": "suli",
+          "emotion": "down",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "你举起手机。她深吸一口气，按下录像，盯着镜头。"
+        },
+        {
+          "text": "一秒，两秒。她什么都没做，只是笑。第七秒，她伸手挡住镜头，黑屏。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "down",
+          "text": "「这是我第一次，七秒钟里没有在表演。」"
+        },
+        {
+          "text": "她把手机扔到床那头，靠在你肩上。头发蹭到你脖子，有洗发水的味道。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "serious",
+          "text": "「直播里我说过我最想要什么吗？没有。我现在说：我想被人记住，不是被点击。」"
+        },
+        {
+          "text": "灯很暗。她抬起头看你，眼睛里没有镜头，只有你。"
+        }
+      ],
+      "intimacy": {
+        "tier": "adult",
+        "stage": "approach",
+        "partners": [
+          "xu",
+          "suli"
+        ],
+        "consent": "mutual"
+      },
+      "choices": [
+        {
+          "id": "su_kiss",
+          "text": "「我记住了。以私人的名义。」",
+          "next": "d12_final",
+          "effects": [
+            {
+              "set": "intimate",
+              "value": true
+            },
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她吻过来的时候，那台手机彻底黑了屏。这一晚没有任何素材，属于你们两个人。"
+        },
+        {
+          "id": "su_hold",
+          "text": "抱住她，什么都别说",
+          "next": "d12_final",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "她哭了，很小声。哭完说：「真丢人，妆都花了。」你说素颜才好看。她说骗子。"
+        }
+      ]
+    },
+    "suli_stop": {
+      "title": "不营业的约会",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_intimate_calm",
+      "cast": [
+        {
+          "who": "suli",
+          "emotion": "smile",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "你们坐在床边聊到后半夜。她讲入行的第一年，讲被骂上热搜的那天。"
+        },
+        {
+          "speaker": "suli",
+          "emotion": "smile",
+          "text": "「跟你聊天不用打草稿。这算什么？约会的顶配吗？」"
+        },
+        {
+          "text": "天快亮时她站起来，把那条没发的七秒视频发进了你手机的对话框。"
+        },
+        {
+          "text": "「存着。」她说，「哪天我忘了自己什么样，你放给我看。」"
+        }
+      ],
+      "next": "d12_final"
+    },
+    "fang_intro": {
+      "title": "敲门",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_intimate_slow",
+      "cast": [
+        {
+          "who": "fang",
+          "emotion": "awkward",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "敲门声很轻，三下，然后是漫长的安静。你开门，方晚端着一个塌掉的舒芙蕾。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "awkward",
+          "text": "「失败了……三次。这个最完整，虽然塌了。」她把盘子举到你面前，「你要吃吗。」"
+        },
+        {
+          "text": "勺子只带了一把。她自己先愣住了，耳朵慢慢红起来，也没说回去拿。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "down",
+          "text": "「明天节目就结束了。我想……想最后任性一次。」"
+        },
+        {
+          "text": "走廊摄像机的红灯亮着。她端着盘子，站在门口，像端着自己全部的勇气。"
+        }
+      ],
+      "intimacy": {
+        "tier": "adult",
+        "stage": "approach",
+        "partners": [
+          "xu",
+          "fang"
+        ],
+        "consent": "mutual"
+      },
+      "choices": [
+        {
+          "id": "fa_in",
+          "text": "「进来。两个人吃。」",
+          "next": "fang_night",
+          "feedback": "她进门时盘子晃了一下。你扶住的不是盘子，是她的手腕。她没缩回去。"
+        },
+        {
+          "id": "fa_stop2",
+          "text": "「换个时间，我请你。」",
+          "next": "fang_stop",
+          "feedback": "她点头，转身走了两步又回头：「那说好了。你别搬走。」"
+        }
+      ]
+    },
+    "fang_night": {
+      "title": "深夜厨房 · 两个人",
+      "location": "别墅厨房",
+      "background": "bg_villa_kitchen_night",
+      "bgm": "bgm_intimate_calm",
+      "cast": [
+        {
+          "who": "fang",
+          "emotion": "soft",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "她说睡不着，你们溜进厨房，烤第五次舒芙蕾。"
+        },
+        {
+          "text": "烤到一半她开始讲她的小店：开业那天只卖出去两块蛋糕，一块是她妈买的。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "down",
+          "text": "「大家都说我温柔。温柔的人，是不是最没人问累不累。」"
+        },
+        {
+          "text": "计时器响了。第五次，舒芙蕾没有塌。她愣了几秒，眼眶忽然红了。"
+        },
+        {
+          "speaker": "fang",
+          "emotion": "soft",
+          "text": "「成功了。今晚，有人陪着的时候，它就不塌。」"
+        },
+        {
+          "text": "你们分吃那一个舒芙蕾。她的指尖碰到你的手背，轻轻的，像撒了一层糖粉。"
+        }
+      ],
+      "intimacy": {
+        "tier": "adult",
+        "stage": "approach",
+        "partners": [
+          "xu",
+          "fang"
+        ],
+        "consent": "mutual"
+      },
+      "choices": [
+        {
+          "id": "fa_kiss",
+          "text": "「以后每一炉，我都在。」",
+          "next": "d12_final",
+          "effects": [
+            {
+              "set": "intimate",
+              "value": true
+            },
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "她踮起脚吻你，尝起来是甜的。厨房计时器滴滴答答，没人去关。"
+        },
+        {
+          "id": "fa_wipe",
+          "text": "替她擦掉眼角的泪",
+          "next": "d12_final",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "她「呜」了一声把脸埋进你肩膀。面粉蹭了你一袖子，谁都没动。"
+        }
+      ]
+    },
+    "fang_stop": {
+      "title": "说好了",
+      "location": "别墅走廊",
+      "background": "bg_villa_corridor",
+      "bgm": "bgm_intimate_calm",
+      "cast": [
+        {
+          "who": "fang",
+          "emotion": "smile",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "她抱着空盘子走了。走廊的灯一盏一盏在她身后熄灭。"
+        },
+        {
+          "text": "回到房间，你发现盘子上贴了张便签，字圆圆的："
+        },
+        {
+          "text": "「明天早上六点，厨房。最后一炉，只烤两个人的份。」"
+        }
+      ],
+      "next": "d12_final"
+    },
+    "zhou_intro": {
+      "title": "敲门",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_night",
+      "cast": [
+        {
+          "who": "zhou",
+          "emotion": "default",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "敲门声两下，公务节奏。你开门，老周拿着一支笔站在门口，笔是节目组的道具。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "neutral",
+          "text": "「最终宣言的笔，道具组少了支备用，给你送来。」他没走，「顺便，坐会儿？」"
+        },
+        {
+          "text": "他坐在你床边的椅子上，保温杯放在地上。十五年来他第一次没有对讲机在身上。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "serious",
+          "text": "「明天收工。我忽然不知道回哪儿。」他笑了一下，「习惯了节目永远有下一季。」"
+        },
+        {
+          "text": "窗外是海。他看着窗外，像在看一格永远剪不完的素材。"
+        }
+      ],
+      "choices": [
+        {
+          "id": "zh_talk",
+          "text": "「那就聊聊停机以后。」",
+          "next": "zhou_night",
+          "feedback": "他把椅子往窗边挪了挪。这一晚，没有人叫过他导演。"
+        },
+        {
+          "id": "zh_stop2",
+          "text": "「您该休息了，导演。」",
+          "next": "zhou_stop",
+          "feedback": "他起身，拿起保温杯：「也是。」走到门口，他回头说了句：谢谢你陪老头子。"
+        }
+      ]
+    },
+    "zhou_night": {
+      "title": "停机以后",
+      "location": "卧室（大床房）",
+      "background": "bg_villa_room_night",
+      "bgm": "bgm_intimate_calm",
+      "cast": [
+        {
+          "who": "zhou",
+          "emotion": "serious",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "你们聊到凌晨。他讲他剪掉的最喜欢的一段素材：一个嘉宾对着海哭，没人看见。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "serious",
+          "text": "「那期播出后收视炸了，剪掉的那段谁都不知道。有时候我想，最好的都不在片子里。」"
+        },
+        {
+          "text": "他从兜里摸出个旧 U 盘，放在你桌上：「这里面的素材，从来没播过。你留着。」"
+        },
+        {
+          "text": "你问他为什么给你。他沉默了很久，说：「因为你看见我的时候，眼神里没有机位。」"
+        },
+        {
+          "text": "他站起来准备走，走到门口又停下，背对着你。"
+        },
+        {
+          "speaker": "zhou",
+          "emotion": "down",
+          "text": "「我这种人，一辈子在给别人造心动。轮到自己……不太会用。」"
+        }
+      ],
+      "choices": [
+        {
+          "id": "zh_hold",
+          "text": "走过去，扶住他的肩",
+          "next": "d12_final",
+          "effects": [
+            {
+              "set": "intimate",
+              "value": true
+            },
+            {
+              "add": "love",
+              "value": 2
+            }
+          ],
+          "feedback": "他没回头，抬手按住你的手。走廊的声控灯亮了一盏，又灭了。谁也没开灯。"
+        },
+        {
+          "id": "zh_tea",
+          "text": "「明早六点，天台，喝茶。」",
+          "next": "d12_final",
+          "effects": [
+            {
+              "add": "love",
+              "value": 1
+            }
+          ],
+          "feedback": "他「嗯」了一声，声音有点哑：「六点。我带杯子。」这次保温杯里换了新茶。"
+        }
+      ]
+    },
+    "zhou_stop": {
+      "title": "各自安好",
+      "location": "别墅走廊",
+      "background": "bg_villa_corridor",
+      "bgm": "bgm_night",
+      "cast": [
+        {
+          "who": "zhou",
+          "emotion": "default",
+          "at": "center"
+        }
+      ],
+      "segments": [
+        {
+          "text": "他走了。走廊里他的脚步声很稳，像剪好的转场，干净，不拖泥带水。"
+        },
+        {
+          "text": "你关门前，听见他在楼梯口自言自语：「明天，记得把备用笔收回来。」"
+        }
+      ],
+      "next": "d12_final"
+    },
+    "end_suli_true": {
+      "title": "第七秒之外",
+      "location": "苏梨的工作室",
+      "background": "bg_town_market",
+      "bgm": "bgm_warm",
+      "ending": {
+        "id": "suli_true",
+        "name": "第七秒之外",
+        "kind": "TRUE ENDING",
+        "tier": "romance",
+        "summary": "她清空了账号简介。你的书店收银台上贴着一张拍立得：两个人，七秒之外。"
+      },
+      "segments": [
+        {
+          "text": "节目收官那晚，苏梨发了那条七秒视频，配文只有一个字：真。"
+        },
+        {
+          "text": "然后她清空了账号简介，掉了一百万粉。热搜挂了一夜，她在你的书店里切水果。"
+        },
+        {
+          "text": "旧货市场淘来的相机摆在收银台上，镜头对着门口。她说这叫监控，其实她天天忘开。"
+        },
+        {
+          "text": "有粉丝找到店里，认出她，问她为什么退网。她指了指你：「被私人收藏了。」"
+        },
+        {
+          "text": "傍晚打烊，她举着手机过来：「帮你拍条视频，就七秒。」"
+        },
+        {
+          "text": "第七秒，她伸手挡住镜头，凑过来吻你。这段素材，全世界只有一部，永不发布。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "suli",
+          "emotion": "smile",
+          "at": "right"
+        },
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        }
+      ]
+    },
+    "end_suli_normal": {
+      "title": "第七秒留白",
+      "location": "线上",
+      "background": "bg_broadcast",
+      "bgm": "bgm_aftercare",
+      "ending": {
+        "id": "suli_normal",
+        "name": "第七秒留白",
+        "kind": "NORMAL",
+        "tier": "romance",
+        "summary": "她回到镜头前。但每条视频的第七秒，都会停一帧。那是留给你的。"
+      },
+      "segments": [
+        {
+          "text": "苏梨回到了镜头前。数据很好，广告照接，直播照开。"
+        },
+        {
+          "text": "只是细心的粉丝发现，她每条视频的第七秒都会停一帧，黑屏，一闪而过。"
+        },
+        {
+          "text": "有人逐帧分析，什么都没找到。只有你知道，那一帧是你的书店门口。"
+        },
+        {
+          "text": "她的私信置顶只有一句话：等一个不营业的日子。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "suli",
+          "emotion": "serious",
+          "at": "center"
+        }
+      ]
+    },
+    "end_fang_true": {
+      "title": "中间那堵墙",
+      "location": "甜夜书店",
+      "background": "bg_villa_kitchen",
+      "bgm": "bgm_warm",
+      "ending": {
+        "id": "fang_true",
+        "name": "中间那堵墙",
+        "kind": "TRUE ENDING",
+        "tier": "romance",
+        "summary": "你的书店开在方晚甜品店隔壁。后来，中间那堵墙被拆掉了。"
+      },
+      "segments": [
+        {
+          "text": "节目结束三个月，你的书店隔壁开了间甜品店，招牌上的名字你认识。"
+        },
+        {
+          "text": "搬货那天她跑来帮忙，围裙都没摘，面粉蹭在你的书脊上，像落了一层雪。"
+        },
+        {
+          "text": "她店里最受欢迎的是「舒芙蕾三号」，备注写着：失败五次才敢卖。"
+        },
+        {
+          "text": "有天她忽然说：「我们中间这堵墙好厚，递蛋糕要绕外面走。」"
+        },
+        {
+          "text": "你放下书，拿起了锤子。她愣在原地，笑出声，眼睛弯成月牙。"
+        },
+        {
+          "text": "现在，你把书递过窗口，她把蛋糕递过来。中间没有墙。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "fang",
+          "emotion": "smile",
+          "at": "right"
+        },
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        }
+      ]
+    },
+    "end_fang_normal": {
+      "title": "周三的曲奇",
+      "location": "独立书店",
+      "background": "bg_bookstore",
+      "bgm": "bgm_warm",
+      "ending": {
+        "id": "fang_normal",
+        "name": "周三的曲奇",
+        "kind": "NORMAL",
+        "tier": "romance",
+        "summary": "每周三，你都会收到一盒曲奇。盒底的字，一盒比一盒短。"
+      },
+      "segments": [
+        {
+          "text": "每周三，书店都会收到一盒曲奇，没有寄件人，只有手写的标签。"
+        },
+        {
+          "text": "第一盒盒底写着：这一炉失败了三次，但是只给你。"
+        },
+        {
+          "text": "第十盒写着：镇上的猫都认识我了。"
+        },
+        {
+          "text": "第一百盒只有两个字：想你。你订了当天最晚一班去镇上的船。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "fang",
+          "emotion": "soft",
+          "at": "right"
+        },
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        }
+      ]
+    },
+    "end_zhou_true": {
+      "title": "不在名单上",
+      "location": "剪辑房",
+      "background": "bg_broadcast",
+      "bgm": "bgm_warm",
+      "ending": {
+        "id": "zhou_true",
+        "name": "不在名单上",
+        "kind": "TRUE ENDING",
+        "tier": "romance",
+        "summary": "第二季筹备会上，他划掉嘉宾名单第一行，写上：不参加节目的人。"
+      },
+      "segments": [
+        {
+          "text": "第二季筹备会，老周把新方案拍在桌上，全组倒吸凉气：直播时长减半。"
+        },
+        {
+          "text": "有人问为什么。他在嘉宾名单第一行划了道横线，写上：不参加节目的人，一位。"
+        },
+        {
+          "text": "散会后他带你去看新装的剪辑房，就在你书店的隔壁，隔音很好。"
+        },
+        {
+          "text": "「以后我剪片子，你卖你的书。」他拧开保温杯，「茶要凉了，你不提醒我？」"
+        },
+        {
+          "text": "你没提醒。你把他的杯子拿过来，倒掉了凉茶，泡上热的。"
+        },
+        {
+          "text": "十五年来，他第一次觉得，机器可以停一停。停机的时间里，有你。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "zhou",
+          "emotion": "default",
+          "at": "right"
+        },
+        {
+          "who": "xu",
+          "emotion": "default",
+          "at": "center"
+        }
+      ]
+    },
+    "end_zhou_normal": {
+      "title": "片尾第一行",
+      "location": "线上",
+      "background": "bg_broadcast",
+      "bgm": "bgm_aftercare",
+      "ending": {
+        "id": "zhou_normal",
+        "name": "片尾第一行",
+        "kind": "NORMAL",
+        "tier": "romance",
+        "summary": "第二季开播。片尾字幕第一行：特别感谢——那位让他想起为什么讲故事的人。"
+      },
+      "segments": [
+        {
+          "text": "第二季如期开播，节奏慢了，摄像头少了，弹幕说好看得不像这个平台的综艺。"
+        },
+        {
+          "text": "没人知道为什么。只有片尾字幕多了一行，很小，一闪而过。"
+        },
+        {
+          "text": "特别感谢：那位让他想起为什么讲故事的人。"
+        },
+        {
+          "text": "你把那一帧截了下来，贴在书店收银台后面。来买书的客人问，你只笑笑。"
+        }
+      ],
+      "cast": [
+        {
+          "who": "zhou",
+          "emotion": "serious",
+          "at": "center"
         }
       ]
     }

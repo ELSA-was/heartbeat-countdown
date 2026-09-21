@@ -130,11 +130,6 @@
   var portraits = [];
   var AT_POS = { "far-left": 0.10, "left": 0.28, "center": 0.50, "right": 0.72, "far-right": 0.90 };
 
-  function portraitBaseHeight(layer) {
-    var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--portrait-height"));
-    return layer.clientHeight * (v || 78) / 100;
-  }
-
   /* 期望位置：全部未指定站位时按人数均分；否则按 .5 均布，已指定的用固定锚点 */
   function desiredPositions(list) {
     var n = list.length;
@@ -188,14 +183,46 @@
     if (!items.length) return;
     var W = layer.clientWidth, H = layer.clientHeight;
     if (!W || !H) return;
-    var hasFocus = items.some(function (it) { return it.focused; });
+    // 立绘整体上移：底边贴到对话框上沿（略沉入一点），不再挡住正文
+    var dlg = $("dialogue");
+    var dlgRect = dlg && dlg.getBoundingClientRect();
+    var lift = 0;
+    if (dlgRect && dlgRect.height > 0) {
+      lift = Math.max(0, window.innerHeight - dlgRect.top - dlgRect.height * 0.18);
+      layer.style.bottom = lift + "px";
+      H = layer.clientHeight;
+    }
+    var stageH = H + lift;
+    var base = Math.min(H * 0.94, stageH * 0.66);
     items.forEach(function (it) {
       it.ar = it.img.naturalWidth / it.img.naturalHeight || 0.72;
-      // 有人说话时：说话者保持基准大小，其他人缩到 88% 形成前后层次
-      it.es = it.scale * (hasFocus && !it.focused ? 0.88 : 1);
+      it.es = it.scale * (it.focused ? 1 : 0.88);
     });
+    var focused = null;
+    items.forEach(function (it) { if (it.focused) focused = it; });
+    if (focused) {
+      // 说话者独清：焦点者居中清晰，其余按原站位方向滑出画面
+      var fh = base * (focused.es || focused.scale || 1);
+      items.forEach(function (it) {
+        if (it === focused) {
+          it.wrap.style.height = fh + "px";
+          it.wrap.style.left = (W / 2) + "px";
+          it.wrap.style.zIndex = "30";
+          it.wrap.classList.remove("out");
+        } else {
+          var oh = base * (it.es || it.scale || 1);
+          var ow = oh * it.ar;
+          it.wrap.style.height = oh + "px";
+          it.wrap.style.left = (it.desired * W < W / 2 ? -ow / 2 - 60 : W + ow / 2 + 60) + "px";
+          it.wrap.style.zIndex = "20";
+          it.wrap.classList.add("out");
+        }
+        markPlaced(it.wrap);
+      });
+      return;
+    }
     items.sort(function (a, b) { return a.desired === b.desired ? a.order - b.order : a.desired - b.desired; });
-    var base = portraitBaseHeight(layer), h = base;
+    var h = base;
     for (var attempt = 0; attempt < 48; attempt++) {
       if (tryPlace(items, W, h)) break;
       h *= 0.94;
@@ -203,7 +230,8 @@
     items.forEach(function (it) {
       it.wrap.style.height = (h * it.es) + "px";
       it.wrap.style.left = it.x + "px";
-      it.wrap.style.zIndex = String(it.focused ? 30 : 20);
+      it.wrap.style.zIndex = "20";
+      it.wrap.classList.remove("out");
       // 中间的人略微上移，形成弧形站位层次（3 人以上才明显）
       if (items.length >= 3) {
         var cent = 1 - Math.abs(it.x / W * 2 - 1);
@@ -211,14 +239,19 @@
       } else {
         it.wrap.style.bottom = "";
       }
-      if (!it.wrap.classList.contains("placed")) {
-        it.wrap.classList.add("placed");
-        requestAnimationFrame(function () { it.wrap.classList.add("anim-pos"); });
-      }
+      markPlaced(it.wrap);
     });
   }
 
-  /* 说话者聚焦：有台词时焦点立绘保持大小，其余变暗缩小；旁白/画外音时全部恢复 */
+  function markPlaced(wrap) {
+    if (!wrap.classList.contains("placed")) {
+      wrap.classList.add("placed");
+      requestAnimationFrame(function () { wrap.classList.add("anim-pos"); });
+    }
+  }
+
+  /* 说话者聚焦：有人说话时焦点者居中独清，其余滑出画面（layoutPortraits 执行）；
+     旁白或说话者不在场上时，全员回到正常站位 */
   function focusPortraits(who) {
     var onStage = !!who && portraits.some(function (it) { return !it.dead && it.wrap.dataset.who === who; });
     var changed = false;
@@ -227,7 +260,6 @@
       var f = onStage && it.wrap.dataset.who === who;
       if (it.focused !== f) { it.focused = f; changed = true; }
       it.wrap.classList.toggle("focus", f);
-      it.wrap.classList.toggle("dim", onStage && !f);
     });
     if (changed) layoutPortraits();
   }
